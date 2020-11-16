@@ -647,13 +647,11 @@ extern TSS2_RC Fapi_NvSetBits_Async(
 extern TSS2_RC Fapi_NvSetBits_Finish(
     FAPI_CONTEXT   *context);
 
-/*
-extern typedef TSS2_RC (*Fapi_CB_Auth)(
+typedef TSS2_RC (*Fapi_CB_Auth)(
     FAPI_CONTEXT   *context,
     char     const *description,
     char          **auth,
     void           *userData);
-*/
 
 extern TSS2_RC Fapi_SetAuthCB(
     FAPI_CONTEXT   *context,
