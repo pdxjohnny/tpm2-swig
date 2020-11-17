@@ -18,10 +18,10 @@ extern const char *Tss2_RC_Decode(TSS2_RC rc);
 %include "carrays.i"
 
 /* TODO For some reason this doesn't work if we name it TPMI_YES_NO */
-%pointer_functions(TPMI_YES_NO, TPMI_YES_NO_PTR);
+%pointer_class(TPMI_YES_NO, TPMI_YES_NO_PTR);
 
 /* Gernate the following with:
- * $ grep -E '} .*;' "$(pkg-config --cflags-only-I tss2-esys | sed -e 's/-I//g' -e 's/ //g')/tss2/tss2_tpm2_types.h" | sed -e 's/} //g' -e 's/;//g' | sed -e 's#.*#%sizeof(&);\n%array_class(&, &_ARRAY);\n%pointer_functions(&, &_PTR);\n%pointer_functions(& *, &_PTR_PTR);#g' > tpm2_pytss/swig/tpm2_structures.i
+ * $ grep -E '} .*;' "$(pkg-config --cflags-only-I tss2-esys | sed -e 's/-I//g' -e 's/ //g')/tss2/tss2_tpm2_types.h" | sed -e 's/} //g' -e 's/;//g' | sed -e 's#.*#%sizeof(&);\n%array_class(&, &_ARRAY);\n%pointer_class(&, &_PTR);\n%pointer_class(& *, &_PTR_PTR);#g' > tpm2_pytss/swig/tpm2_structures.i
  */
 /* BEGIN GENERATED POINTER_CLASSES */
 %include "tpm2_structures.i"
@@ -40,25 +40,24 @@ typedef int32_t             INT32;
 typedef uint64_t            UINT64;
 typedef int64_t             INT64;
 
-%pointer_functions(void *, VOID_PTR_PTR);
+%pointer_class(size_t, SIZE_T_PTR);
+%pointer_class(SIZE_T_PTR, SIZE_T_PTR_PTR);
 
-%pointer_functions(size_t, SIZE_T_PTR);
-%pointer_functions(size_t *, SIZE_T_PTR_PTR);
-
-%pointer_functions(char, CHAR_PTR);
-%pointer_functions(char *, CHAR_PTR_PTR);
-%pointer_functions(UINT8, UINT8_PTR);
-%pointer_functions(UINT8 *, UINT8_PTR_PTR);
+%pointer_class(char, CHAR_PTR);
+%pointer_class(CHAR_PTR, CHAR_PTR_PTR);
+%pointer_class(UINT8, UINT8_PTR);
+%pointer_class(UINT8_PTR, UINT8_PTR_PTR);
+%array_class(UINT8, UINT8_ARRAY);
 
 %array_class(UINT32, UINT32_ARRAY);
 %pointer_class(uint32_t, uint32_t_PTR);
-%pointer_functions(uint32_t_PTR, uint32_t_PTR_PTR);
+%pointer_class(uint32_t_PTR, uint32_t_PTR_PTR);
 %pointer_class(UINT32, UINT32_PTR);
-%pointer_functions(UINT32_PTR, UINT32_PTR_PTR);
+%pointer_class(UINT32_PTR, UINT32_PTR_PTR);
 %pointer_class(uint16_t, uint16_t_PTR);
-%pointer_functions(uint16_t_PTR, uint16_t_PTR_PTR);
+%pointer_class(uint16_t_PTR, uint16_t_PTR_PTR);
 %pointer_class(UINT16, UINT16_PTR);
-%pointer_functions(UINT16_PTR, UINT16_PTR_PTR);
+%pointer_class(UINT16_PTR, UINT16_PTR_PTR);
 %array_class(UINT16, UINT16_ARRAY);
 %array_class(BYTE, ByteArray);
 

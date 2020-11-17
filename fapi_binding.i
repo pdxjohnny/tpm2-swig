@@ -4,27 +4,36 @@
  * All rights reserved.
  *******************************************************************************/
 
-%module fapi_binding
+%module(directors="1") fapi_binding
 %{
+extern "C" {
 #include <tss2/tss2_fapi.h>
 #include <tss2/tss2_esys.h>
 #include <tss2/tss2_tctildr.h>
+}
+
+#include "fapi_callbacks.h"
 
 %}
+
+%feature("director") Fapi_Callback_Proxy;
+
+%include "fapi_callbacks.h"
 
 %include "tpm2_types.i"
 %include "mu_binding.i"
 
-%pointer_functions(struct FAPI_CONTEXT *, fapi_ctx_ptr);
+/* %pointer_functions(FAPI_CONTEXT *, fapi_ctx_ptr); */
 
 %sizeof(FAPI_POLL_HANDLE);
 %array_class(FAPI_POLL_HANDLE, FAPI_POLL_HANDLE_ARRAY);
-%pointer_functions(FAPI_POLL_HANDLE, FAPI_POLL_HANDLE_PTR);
-%pointer_functions(FAPI_POLL_HANDLE *, FAPI_POLL_HANDLE_PTR_PTR);
+%pointer_class(FAPI_POLL_HANDLE, FAPI_POLL_HANDLE_PTR);
+%pointer_class(FAPI_POLL_HANDLE_PTR, FAPI_POLL_HANDLE_PTR_PTR);
 
 /* The Python Bindings will not work without this. */
 %feature("autodoc", "1");
 
+extern "C" {
 /* Type definitions */
 typedef struct FAPI_CONTEXT FAPI_CONTEXT;
 
@@ -647,11 +656,13 @@ extern TSS2_RC Fapi_NvSetBits_Async(
 extern TSS2_RC Fapi_NvSetBits_Finish(
     FAPI_CONTEXT   *context);
 
-typedef TSS2_RC (*Fapi_CB_Auth)(
+/*
+extern TSS2_RC (*Fapi_CB_Auth)(
     FAPI_CONTEXT   *context,
     char     const *description,
     char          **auth,
     void           *userData);
+*/
 
 extern TSS2_RC Fapi_SetAuthCB(
     FAPI_CONTEXT   *context,
@@ -703,3 +714,4 @@ extern TSS2_RC Fapi_SetPolicyActionCB(
     FAPI_CONTEXT        *context,
     Fapi_CB_PolicyAction callback,
     void                *userData);
+}
