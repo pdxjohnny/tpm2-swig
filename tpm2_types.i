@@ -40,15 +40,13 @@ typedef int32_t             INT32;
 typedef uint64_t            UINT64;
 typedef int64_t             INT64;
 
-%pointer_functions(void *, VOID_PTR_PTR);
+%pointer_class(size_t, SIZE_T_PTR);
+%pointer_class(SIZE_T_PTR, SIZE_T_PTR_PTR);
 
-%pointer_functions(size_t, SIZE_T_PTR);
-%pointer_functions(size_t *, SIZE_T_PTR_PTR);
-
-%pointer_functions(char, CHAR_PTR);
-%pointer_functions(char *, CHAR_PTR_PTR);
-%pointer_functions(UINT8, UINT8_PTR);
-%pointer_functions(UINT8 *, UINT8_PTR_PTR);
+%pointer_class(char, CHAR_PTR);
+%pointer_class(CHAR_PTR, CHAR_PTR_PTR);
+%pointer_class(UINT8, UINT8_PTR);
+%pointer_class(UINT8_PTR, UINT8_PTR_PTR);
 %array_class(UINT8, UINT8_ARRAY);
 
 %array_class(UINT32, UINT32_ARRAY);
@@ -1397,3 +1395,4 @@ typedef TPM2_HANDLE TPMI_RH_AC;
 #define TSS2_ESYS_RC_RSP_AUTH_FAILED             (TSS2_ESAPI_RC_LAYER | TSS2_BASE_RC_RSP_AUTH_FAILED)
 
 %pointer_class(TPM2_RC, TPM2_RC_PTR);
+%pointer_class(TSS2_RC, TSS2_RC_PTR);

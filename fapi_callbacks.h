@@ -10,15 +10,11 @@ extern "C" {
 class Fapi_Callback_Proxy {
 public:
 	virtual ~Fapi_Callback_Proxy() { std::cout << "Fapi_Callback_Proxy::~Fapi_Callback_Proxy()" << std:: endl; }
-	virtual TSS2_RC Fapi_CB_Auth(
+	virtual void Fapi_CB_Auth(
     char    const *objectPath,
     char    const *description,
-    char    const **auth)
-  {
-    std::cout << "Fapi_Callback_Proxy::Fapi_CB_Auth()" << std::endl;
-    std::cout << "Fapi_Callback_Proxy::Fapi_CB_Auth() description: " << description << std::endl;
-    return TSS2_RC_SUCCESS;
-  }
+    char    const **auth,
+    TSS2_RC       *rc) {}
 };
 
 
@@ -37,8 +33,13 @@ public:
     char    const  *objectPath,
     char    const  *description,
     char    const **auth,
-    void           *userData) {
-    return ((Caller *)userData)->callback->Fapi_CB_Auth(objectPath, description, auth);
+    void           *userData)
+  {
+    TSS2_RC rc = TPM2_RC_FAILURE;
+
+    ((Caller *)userData)->callback->Fapi_CB_Auth(objectPath, description, auth, &rc);
+
+    return rc;
   }
 };
 /*

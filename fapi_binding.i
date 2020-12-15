@@ -4,29 +4,43 @@
  * All rights reserved.
  *******************************************************************************/
 
-%module fapi_binding
+%module(directors="1") fapi_binding
 %{
 #include <tss2/tss2_fapi.h>
 #include <tss2/tss2_esys.h>
 #include <tss2/tss2_tctildr.h>
+
+struct FAPI_CONTEXT { };
 
 %}
 
 %include "tpm2_types.i"
 %include "mu_binding.i"
 
-%pointer_functions(struct FAPI_CONTEXT *, fapi_ctx_ptr);
+struct FAPI_CONTEXT { };
+
+/* Type definitions */
+/* typedef struct FAPI_CONTEXT FAPI_CONTEXT; */
+
+%nodefaultctor FAPI_CONTEXT;
+%nodefaultdtor FAPI_CONTEXT;
+
+%pointer_class(FAPI_CONTEXT, fapi_ctx);
+%pointer_class(fapi_ctx, fapi_ctx_ptr);
 
 %sizeof(FAPI_POLL_HANDLE);
 %array_class(FAPI_POLL_HANDLE, FAPI_POLL_HANDLE_ARRAY);
-%pointer_functions(FAPI_POLL_HANDLE, FAPI_POLL_HANDLE_PTR);
-%pointer_functions(FAPI_POLL_HANDLE *, FAPI_POLL_HANDLE_PTR_PTR);
+%pointer_class(FAPI_POLL_HANDLE, FAPI_POLL_HANDLE_PTR);
+%pointer_class(FAPI_POLL_HANDLE_PTR, FAPI_POLL_HANDLE_PTR_PTR);
 
 /* The Python Bindings will not work without this. */
 %feature("autodoc", "1");
 
-/* Type definitions */
-typedef struct FAPI_CONTEXT FAPI_CONTEXT;
+%{
+#include "fapi_callbacks.h"
+%}
+
+%feature("director") Fapi_Callback_Proxy;
 
 /* Context functions */
 
